@@ -1,6 +1,17 @@
+"""
+Module providing 'parse_match_data' function for parsing useful match data and statistics.
+
+The 'parse_match_data' function filters out unhelpful values such as images, team themes, metadata, and other irrelevant data in the JSON object obtained by scraping NRL.com matches. 
+
+Other functions are internal helpers and should not be used directly.
+"""
+
+
 def get_team_data(team_json):
-    team_keys = ['teamId', 'nickName', 'name', 'score']
-    team_data = {key: team_json.get(key, None) for key in team_keys}
+    """Extract useful team data from the JSON object containing team info"""
+
+    team_keys = ['teamId', 'name', 'score']
+    team_data = {key: team_json[key] for key in team_keys}
 
     # Copy scoring data
     team_scoring_json = team_json['scoring']
@@ -12,13 +23,19 @@ def get_team_data(team_json):
     return team_data
 
 def get_team_stats(team_stats_json):
-    team_stats = {}
+    """Get list containing useful team stats from JSON object containing team stats"""
+
+    team_stats_list = []
     for stat_group in team_stats_json:
         for stat in stat_group['stats']:
             stat_title = stat['title']
+
+            # Stat with title 'used' is the number of interchanges used
             if stat_title == 'Used':
                 stat_title = 'Interchanges'
-            team_stats[stat_title] = {
+
+            team_stats = {
+                'title': stat_title,
                 'type': stat['type'],
                 'home': {
                     'value':  stat['homeValue']['value'],
@@ -30,36 +47,46 @@ def get_team_stats(team_stats_json):
 
             # Copy numerator and denominator values if they exist
             if 'numerator' in stat['homeValue']:
-                team_stats[stat_title]['home']['numerator'] = stat['homeValue']['numerator']
-                team_stats[stat_title]['home']['denominator'] = stat['homeValue']['denominator']
-                team_stats[stat_title]['away']['numerator'] = stat['awayValue']['numerator']
-                team_stats[stat_title]['away']['denominator'] = stat['awayValue']['denominator']
+                team_stats['home']['numerator'] = stat['homeValue']['numerator']
+                team_stats['home']['denominator'] = stat['homeValue']['denominator']
+                team_stats['away']['numerator'] = stat['awayValue']['numerator']
+                team_stats['away']['denominator'] = stat['awayValue']['denominator']
+            
+            team_stats_list.append(team_stats)
 
-    return team_stats
-
-def get_player_stats(player_stats_json):
-    # List of players and their stats
-    home_players = player_stats_json['homeTeam']
-    
-
+    return team_stats_list
 
 def parse_match_data(match_data_json):
-    # Copy relevant game info
+    """
+    Filter unhelpful data from the match data JSON object obtained by scraping NRL.com matches.
+
+    Args:
+        match_data_json (dict): JSON object of match data to extract from.
+
+    Returns:
+        dict: JSON object of useful data.
+
+    Raises:
+        KeyError: If a key is missing from the JSON object.
+    """
+
+    # Copy useful game info
     match_keys = ['matchId', 'matchMode', 'matchState', 'gameSeconds', 'roundNumber', 'roundTitle', 'startTime', 'url','venue', 'venueCity', 'attendance', 'groundConditions', 'hasExtraTime', 'weather'] 
 
     match_data = {key: match_data_json.get(key, None) for key in match_keys}
 
-    # Copy relevant home team data
+    # Copy home team data
     match_data['homeData'] = get_team_data(match_data_json['homeTeam'])
 
     # Copy away team data
     match_data['awayData'] = get_team_data(match_data_json['awayTeam'])
 
+    # Get team stats and save to match_data object
     team_stats_json = match_data_json['stats']['groups']
     team_stats = get_team_stats(team_stats_json)
     match_data['teamStats'] = team_stats
 
+    # Save player stats
     match_data['playerStats'] = match_data_json['stats']['players']
     
-
     return match_data
