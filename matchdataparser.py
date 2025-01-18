@@ -88,5 +88,9 @@ def parse_match_data(match_data_json):
 
     # Save player stats
     match_data['playerStats'] = match_data_json['stats']['players']
-    
+
+    # Separate metadata for player stats
+    player_stats_metadata = match_data['playerStats']['meta']
+    del match_data['playerStats']['meta']
+
     return match_data
