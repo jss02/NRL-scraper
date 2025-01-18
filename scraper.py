@@ -1,25 +1,38 @@
+"""
+Module providing the 'scrape_url' function that scrapes match data from NRL.com matches.
+"""
+
 import requests
 from bs4 import BeautifulSoup
 import html
 import json
-from matchdataparser import parse_match_data
 
-headers = {
-    "User-Agent": "Googlebot/2.1 (+http://www.google.com/bot.html)"
-}
+def scrape_url(url):
+    """
+    Scrapes match data from the NRL.com website
 
-response = requests.get("https://www.nrl.com/draw/nrl-premiership/2002/round-23/bulldogs-v-eels/"
-, headers=headers)
+    Args:
+        url (str): URL for the match in the format "nrl.com/draw/{competition}/{year}/{round}/{match name}".
+    
+    Returns:
+        dict: JSON object containing match data
+    
+    """
 
-soup = BeautifulSoup(response.content, 'html.parser')
+    headers = {
+        "User-Agent": "Googlebot/2.1 (+http://www.google.com/bot.html)"
+    }
 
-data_element = soup.find(id="vue-match-centre")
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
 
+    # Find HTML element containing match data
+    data_element = soup.find(id="vue-match-centre")
 
-q_data = html.unescape(data_element["q-data"])
+    # The data is given as a HTML-escaped JSON string in the 'q-data' attribute
+    q_data = html.unescape(data_element["q-data"])
 
-parsed_data = json.loads(q_data)
-match_data = parse_match_data(parsed_data['match'])
+    # Load data as JSON object
+    data_json = json.loads(q_data)
 
-with open('testjson2.json', 'w') as f:
-    json.dump(match_data, f, indent=4)
+    return data_json
