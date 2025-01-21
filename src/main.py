@@ -4,11 +4,11 @@ import json
 
 def main(url):
     # Get match data JSON object and parse
-    match_data_json = scrape_url(url)
+    match_data_json = scrape_url(url, 'match')
     match_data = parse_match_data(match_data_json['match'])
 
     # Write to test file as JSON file
-    with open('testjson5.json', 'w') as f:
+    with open('output.json', 'w') as f:
         json.dump(match_data, f, indent=4)
 
 if __name__ == '__main__':
