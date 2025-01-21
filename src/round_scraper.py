@@ -27,7 +27,7 @@ def get_round(year, round):
     """
 
     # Create directory to save json files
-    directory = f"{year}/{round}"
+    directory = f"matches/{year}/round {round}"
     os.makedirs(directory, exist_ok=True)
 
     url = f"https://www.nrl.com/draw/?competition=111&round={round}&season={year}"
