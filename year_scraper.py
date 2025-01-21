@@ -17,15 +17,14 @@ def get_year(year):
        get_round(year, round['value'])
 
 if __name__ == '__main__':
-    if len(sys.argv) == '2':
+    if len(sys.argv) == 2:
         get_year(sys.argv[1])
-    elif len(sys.argv) == '3':
+    elif len(sys.argv) == 3:
         for year in range(int(sys.argv[1], int(sys.argv[2]))):
             get_year(year)
     else:
-        if len(sys.argv) != 3:
-            print("Error! Usage: python3 year_scraper.py [year]")
-            print("or")
-            print("Error! Usage: python3 year_scraper.py [start year] [end year]")
-            sys.exit(1)
+        print("Error! Usage: python3 year_scraper.py [year]")
+        print("or")
+        print("Error! Usage: python3 year_scraper.py [start year] [end year]")
+        sys.exit(1)
         
