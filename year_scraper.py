@@ -20,7 +20,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 2:
         get_year(sys.argv[1])
     elif len(sys.argv) == 3:
-        for year in range(int(sys.argv[1], int(sys.argv[2]))):
+        for year in range(int(sys.argv[1]), int(sys.argv[2]) + 1):
             get_year(year)
     else:
         print("Error! Usage: python3 year_scraper.py [year]")
