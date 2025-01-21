@@ -1,5 +1,5 @@
 """
-Module providing the "get_round" function that scrapes all matches in the given round in the year
+Module providing the "get_round" function that scrapes all matches in the given round in the given year.
 """
 
 import sys
@@ -9,6 +9,23 @@ from scraper import scrape_url
 from matchdataparser import parse_match_data
 
 def get_round(year, round):
+    """
+    Saves parsed match data as JSON files for all matches in the given round of the given year.
+    Matches are saved in the directory "/{year}/{round}/", relative to the current working directory.
+    The JSON files are named as "{year}_{round}_{match name}".
+
+    Args:
+        year (str): Year of matches
+        round (str): Round of matches
+
+    Returns:
+        None
+    
+    Raises:
+        KeyError: If there is a missing key in the match data parsing process. Saves the error causing input as error.json file.
+    
+    """
+
     # Create directory to save json files
     directory = f"{year}/{round}"
     os.makedirs(directory, exist_ok=True)
@@ -44,7 +61,7 @@ def get_round(year, round):
         
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Error! Usage: python3 get_round.py [year] [round]")
+        print("Error! Usage: python3 round_scraper.py [year] [round]")
         sys.exit(1)
     
     get_round(sys.argv[1], sys.argv[2])
