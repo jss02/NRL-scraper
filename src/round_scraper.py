@@ -61,7 +61,7 @@ def get_round(year, round):
         
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("Error! Usage: python3 round_scraper.py [year] [round]")
+        print("Error! Usage: python3 src/round_scraper.py [year] [round]")
         sys.exit(1)
     
     get_round(sys.argv[1], sys.argv[2])

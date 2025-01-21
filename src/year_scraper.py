@@ -23,8 +23,8 @@ if __name__ == '__main__':
         for year in range(int(sys.argv[1]), int(sys.argv[2]) + 1):
             get_year(year)
     else:
-        print("Error! Usage: python3 year_scraper.py [year]")
+        print("Error! Usage: python3 src/year_scraper.py [year]")
         print("or")
-        print("Error! Usage: python3 year_scraper.py [start year] [end year]")
+        print("Error! Usage: python3 src/year_scraper.py [start year] [end year]")
         sys.exit(1)
         
