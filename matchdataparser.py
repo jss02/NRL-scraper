@@ -13,12 +13,20 @@ def get_team_data(team_json):
     team_keys = ['teamId', 'name', 'score']
     team_data = {key: team_json[key] for key in team_keys}
 
-    # Copy scoring data
+    # Copy scoring data. If key not present then default to 0.
+    team_data['conversionsAttempts'] = 0
+    team_data['conversionsMade'] = 0
+    team_data['tries'] = 0
+
+    # Populate with values from JSON object if they exist
     team_scoring_json = team_json['scoring']
-    team_data['conversionsAttempts'] = team_scoring_json['conversions']['attempts']
-    team_data['conversionsMade'] = team_scoring_json['conversions']['made']
-    team_data['tries'] = team_scoring_json['tries']['made']
     team_data['halfTimeScore'] = team_scoring_json['halfTimeScore']
+    if 'conversions' in team_scoring_json:
+        team_data['conversionsAttempts'] = team_scoring_json['conversions']['attempts']
+        team_data['conversionsMade'] = team_scoring_json['conversions']['made']
+    
+    if 'tries' in team_scoring_json:
+        team_data['tries'] = team_scoring_json['tries']['made']
 
     return team_data
 
