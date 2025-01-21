@@ -28,8 +28,15 @@ def get_round(year, round):
         if match["matchMode"] == "Post":
             # Get match data JSON object and parse
             match_data_json = scrape_url(match_url, 'match')
-            match_data = parse_match_data(match_data_json['match'])
-        
+
+            # Save input to error file if key exception occurs for debugging
+            try:
+                match_data = parse_match_data(match_data_json['match'])
+            except KeyError as e:
+                with open('error.json', 'w') as f:
+                    json.dump(match_data_json['match'], f, indent=4)
+                raise KeyError
+                    
             # Write to test file as JSON file
             file_path = os.path.join(directory, f'{year}_{round}_{match_name}.json')
             with open(file_path, 'w') as f:
