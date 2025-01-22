@@ -10,7 +10,7 @@ Other functions are internal helpers and should not be used directly.
 def get_team_data(team_json):
     """Extract useful team data from the JSON object containing team info"""
 
-    team_keys = ['teamId', 'name', 'score']
+    team_keys = ['teamId', 'name', 'nickName', 'score']
     team_data = {key: team_json[key] for key in team_keys}
 
     # Copy scoring data. If key not present then default to 0.
@@ -64,6 +64,14 @@ def get_team_stats(team_stats_json):
 
     return team_stats_list
 
+def parse_players(players_json):
+    """Deletes player images from player details JSON objects"""
+    for player_json in players_json:
+        del player_json["headImage"]
+        del player_json["bodyImage"]
+    
+    return
+
 def parse_match_data(match_data_json):
     """
     Filter unhelpful data from the match data JSON object obtained by scraping NRL.com matches.
@@ -88,6 +96,14 @@ def parse_match_data(match_data_json):
 
     # Copy away team data
     match_data['awayData'] = get_team_data(match_data_json['awayTeam'])
+
+    # Get list of players
+    home_players = match_data_json['homeTeam']['players']
+    away_players = match_data_json['awayTeam']['players']
+    parse_players(home_players)
+    parse_players(away_players)
+    match_data['players'] = {'home': home_players, 
+                             'away': away_players}
 
     # Get team stats and save to match_data object
     team_stats_json = match_data_json['stats']['groups']
