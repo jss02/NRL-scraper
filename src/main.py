@@ -16,4 +16,4 @@ def main(url):
         json.dump(match_data, f, indent=4)
     
 if __name__ == '__main__':
-    main("https://www.nrl.com/draw/nrl-premiership/2002/round-3/rabbitohs-v-eagles/")
+    main("https://www.nrl.com/draw/nrl-premiership/2004/round-4/cowboys-v-wests-tigers/")
