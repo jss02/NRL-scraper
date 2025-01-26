@@ -67,9 +67,10 @@ def get_team_stats(team_stats_json):
 def parse_players(players_json):
     """Deletes player images from player details JSON objects"""
     for player_json in players_json:
-        del player_json["headImage"]
-        del player_json["bodyImage"]
-    
+        player_json.pop('headImage', None)
+        player_json.pop('bodyImage', None)
+        player_json.pop('url', None)
+
     return
 
 def parse_match_data(match_data_json):
