@@ -4,7 +4,7 @@ Requires .env file in current working directory in the format:
 DB_NAME={db_name}
 DB_USER={username}
 DB_PASSWORD={password}
-DB_HOST={hotst}
+DB_HOST={host}
 DB_PORT={port}
 
 
