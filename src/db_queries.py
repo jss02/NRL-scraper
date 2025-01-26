@@ -40,3 +40,25 @@ CREATE TABLE IF NOT EXISTS player_stats_metadata (
 );
 """
 
+insert_match_query = """
+INSERT INTO matches (
+    matchId, gameSeconds, roundNumber, startTime, url, venue,
+    attendance, groundConditions, weather, homeTeamId, awayTeamId,
+    homeScore, awayScore, homeData, awayData, teamStats, playerStats
+)
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+"""
+
+insert_players_query = """
+INSERT INTO players (
+    playerId, type, units
+)
+VALUES (%s, %s, %s);
+"""
+
+insert_player_metadata_query = """
+INSERT INTO player_stats_metadata (
+    name, type, units
+)
+VALUES (%s, %s, %s);
+"""
