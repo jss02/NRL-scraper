@@ -10,7 +10,7 @@ def db_conn():
             user=DB_USER,
             password=DB_PASSWORD,
             host=DB_HOST,
-            post=DB_PORT
+            port=DB_PORT
         )
         return conn
     except Exception as e:
@@ -18,5 +18,12 @@ def db_conn():
         return None
 
 def save_to_db(match_data, player_stat_metadata):
-    
+    connection = db_conn()
+    if connection:
+        cursor = connection.cursor()
     pass
+
+
+# Test db connection
+if __name__ == "__main__":
+    save_to_db(1,2)
