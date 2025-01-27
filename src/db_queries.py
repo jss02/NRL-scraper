@@ -4,10 +4,10 @@ File containing the database schemas as strings.
 
 create_matches_table = """
 CREATE TABLE IF NOT EXISTS matches (
-    matchId INTEGER PRIMARY KEY,
+    matchId BIGINT PRIMARY KEY,
     gameSeconds INTEGER NOT NULL,
     roundNumber INTEGER NOT NULL,
-    startTime TIMESTAMPZ NOT NULL,
+    startTime TIMESTAMPTZ NOT NULL,
     url TEXT NOT NULL,
     venue VARCHAR(100) NOT NULL,
     attendance INTEGER,
@@ -46,7 +46,7 @@ INSERT INTO matches (
     attendance, groundConditions, weather, homeTeamId, awayTeamId,
     homeScore, awayScore, homeData, awayData, teamStats, playerStats
 )
-VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
 """
 
 insert_players_query = """
