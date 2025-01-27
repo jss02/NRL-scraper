@@ -57,8 +57,12 @@ def save_to_db(match_data, player_stat_metadata, overwrite=False):
         cursor = connection.cursor()
         create_tables(cursor)
         
-        cursor.execute(insert_match_query, get_match_tuple(match_data))
-        cursor.connection.commit()
+        try:
+            cursor.execute(insert_match_query, get_match_tuple(match_data))
+            cursor.connection.commit()
+        except psycopg2.errors.UniqueViolation as e:
+            print("Error: match already exists in db")
+
 
         #cursor.execute(insert_players_query)
 
