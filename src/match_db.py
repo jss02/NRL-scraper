@@ -27,7 +27,7 @@ def create_tables(cursor):
         cursor.connection.rollback()
 
 def get_match_tuple(match_data):
-    match_duple = (
+    match_tuple = (
         match_data['matchId'],
         match_data['gameSeconds'],
         match_data['roundNumber'],
@@ -46,6 +46,8 @@ def get_match_tuple(match_data):
         {'teamStats': match_data['teamStats']},
         match_data['playerStats']
         )
+
+    return match_tuple
 
 def save_to_db(match_data, player_stat_metadata):
     connection = db_conn()
