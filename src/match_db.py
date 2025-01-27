@@ -2,6 +2,8 @@ import psycopg2
 from psycopg2 import sql
 from psql_config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 from db_queries import *
+import json
+
 def db_conn():
     try:
         conn = psycopg2.connect(
@@ -28,7 +30,7 @@ def create_tables(cursor):
 
 def get_match_tuple(match_data):
     match_tuple = (
-        match_data['matchId'],
+        int(match_data['matchId']),
         match_data['gameSeconds'],
         match_data['roundNumber'],
         match_data['startTime'],
@@ -41,21 +43,23 @@ def get_match_tuple(match_data):
         match_data['awayData']['teamId'],
         match_data['homeData']['score'],
         match_data['awayData']['score'],
-        match_data['homeData'],
-        match_data['awayData'],
-        {'teamStats': match_data['teamStats']},
-        match_data['playerStats']
+        json.dumps(match_data['homeData']),
+        json.dumps(match_data['awayData']),
+        json.dumps({'teamStats': match_data['teamStats']}),
+        json.dumps(match_data['playerStats'])
         )
 
     return match_tuple
 
-def save_to_db(match_data, player_stat_metadata):
+def save_to_db(match_data, player_stat_metadata, overwrite=False):
     connection = db_conn()
     if connection:
         cursor = connection.cursor()
         create_tables(cursor)
         
         cursor.execute(insert_match_query, get_match_tuple(match_data))
+        cursor.connection.commit()
+
         #cursor.execute(insert_players_query)
 
 # Test db connection
