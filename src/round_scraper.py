@@ -7,8 +7,9 @@ import os
 import json
 from scraper import scrape_url
 from matchdataparser import parse_match_data
+from match_db import save_to_db
 
-def get_round(year, round):
+def get_round(year, round, to_json=False):
     """
     Saves parsed match data as JSON files for all matches in the given round of the given year.
     Matches are saved in the directory "/{year}/{round}/", relative to the current working directory.
@@ -17,6 +18,7 @@ def get_round(year, round):
     Args:
         year (str): Year of matches
         round (str): Round of matches
+        to_json (bool): True if data should be saved as JSON files
 
     Returns:
         None
@@ -48,16 +50,19 @@ def get_round(year, round):
 
             # Save input to error file if key exception occurs for debugging
             try:
-                match_data, _ = parse_match_data(match_data_json['match'])
+                match_data, metadata = parse_match_data(match_data_json['match'])
             except KeyError as e:
                 with open('error.json', 'w') as f:
                     json.dump(match_data_json['match'], f, indent=4)
                 raise KeyError
-                    
-            # Write to test file as JSON file
-            file_path = os.path.join(directory, f'{year}_{round}_{match_name}.json')
-            with open(file_path, 'w') as f:
-                json.dump(match_data, f, indent=4)
+            
+            if to_json:
+                # Write to test file as JSON file
+                file_path = os.path.join(directory, f'{year}_{round}_{match_name}.json')
+                with open(file_path, 'w') as f:
+                    json.dump(match_data, f, indent=4)
+            
+            save_to_db(match_data, metadata)
         
 if __name__ == "__main__":
     if len(sys.argv) != 3:
