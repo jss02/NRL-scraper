@@ -55,10 +55,13 @@ def insert_players(cursor, players_json):
     for key in players_json:
         for player in players_json[key]:
             cursor.execute(insert_player_query, (player['playerId'], player['firstName'], player['lastName']))
-            cursor.connection.commit()
+    cursor.connection.commit()
 
 def insert_player_stats_metadata(cursor, metadata):
-    pass
+    for group in metadata:
+        for stat in group['stats']:
+            cursor.execute(insert_player_stats_metadata_query, (stat['name'], stat['type']))
+    cursor.connection.commit()
 
 def save_to_db(match_data, player_stats_metadata, overwrite=False):
     connection = db_conn()
@@ -74,6 +77,8 @@ def save_to_db(match_data, player_stats_metadata, overwrite=False):
             cursor.connection.rollback()
 
         insert_players(cursor, match_data['players'])
+
+        insert_player_stats_metadata(cursor, player_stats_metadata)
 
 
 # Test db connection

@@ -57,10 +57,10 @@ VALUES (%s, %s, %s)
 ON CONFLICT (playerId) DO NOTHING;
 """
 
-insert_player_metadata_query = """
+insert_player_stats_metadata_query = """
 INSERT INTO player_stats_metadata (
-    name, type, units
+    name, type
 )
-VALUES (%s, %s, %s)
+VALUES (%s, %s)
 ON CONFLICT (name) DO NOTHING;
 """
