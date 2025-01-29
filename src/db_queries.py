@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS matches (
 
 create_players_table = """
 CREATE TABLE IF NOT EXISTS players (
-playerId INTEGER PRIMARY KEY,
+playerId BIGINT PRIMARY KEY,
 firstName VARCHAR(50) NOT NULL,
 lastName VARCHAR(50) NOT NULL
 );
@@ -35,8 +35,7 @@ lastName VARCHAR(50) NOT NULL
 create_player_stats_metadata_table = """
 CREATE TABLE IF NOT EXISTS player_stats_metadata (
     name VARCHAR(50) PRIMARY KEY,
-    type VARCHAR(20) NOT NULL,
-    units VARCHAR(20) NOT NULL
+    type VARCHAR(20) NOT NULL
 );
 """
 
