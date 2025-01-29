@@ -51,7 +51,16 @@ def get_match_tuple(match_data):
 
     return match_tuple
 
-def save_to_db(match_data, player_stat_metadata, overwrite=False):
+def insert_players(cursor, players_json):
+    for key in players_json:
+        for player in players_json[key]:
+            cursor.execute(insert_player_query, (player['playerId'], player['firstName'], player['lastName']))
+            cursor.connection.commit()
+
+def insert_player_stats_metadata(cursor, metadata):
+    pass
+
+def save_to_db(match_data, player_stats_metadata, overwrite=False):
     connection = db_conn()
     if connection:
         cursor = connection.cursor()
@@ -62,9 +71,10 @@ def save_to_db(match_data, player_stat_metadata, overwrite=False):
             cursor.connection.commit()
         except psycopg2.errors.UniqueViolation as e:
             print("Error: match already exists in db")
+            cursor.connection.rollback()
 
+        insert_players(cursor, match_data['players'])
 
-        #cursor.execute(insert_players_query)
 
 # Test db connection
 if __name__ == "__main__":

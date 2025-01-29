@@ -49,16 +49,18 @@ INSERT INTO matches (
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
 """
 
-insert_players_query = """
+insert_player_query = """
 INSERT INTO players (
-    playerId, type, units
+    playerId, firstName, lastName
 )
-VALUES (%s, %s, %s);
+VALUES (%s, %s, %s)
+ON CONFLICT (playerId) DO NOTHING;
 """
 
 insert_player_metadata_query = """
 INSERT INTO player_stats_metadata (
     name, type, units
 )
-VALUES (%s, %s, %s);
+VALUES (%s, %s, %s)
+ON CONFLICT (name) DO NOTHING;
 """
