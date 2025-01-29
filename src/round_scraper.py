@@ -48,7 +48,7 @@ def get_round(year, round):
 
             # Save input to error file if key exception occurs for debugging
             try:
-                match_data = parse_match_data(match_data_json['match'])
+                match_data, _ = parse_match_data(match_data_json['match'])
             except KeyError as e:
                 with open('error.json', 'w') as f:
                     json.dump(match_data_json['match'], f, indent=4)

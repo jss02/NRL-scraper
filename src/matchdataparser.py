@@ -118,4 +118,4 @@ def parse_match_data(match_data_json):
     player_stats_metadata = match_data['playerStats']['meta']
     del match_data['playerStats']['meta']
 
-    return match_data
+    return match_data, player_stats_metadata

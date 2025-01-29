@@ -9,7 +9,7 @@ def main(url):
     # Write raw JSON object as JSON file
     with open('rawoutput.json', 'w') as f2:
         json.dump(match_data_json, f2, indent=4)
-    match_data = parse_match_data(match_data_json['match'])
+    match_data, _ = parse_match_data(match_data_json['match'])
 
     # Write to test file as JSON file
     with open('output.json', 'w') as f:
