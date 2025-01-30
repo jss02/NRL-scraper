@@ -11,9 +11,10 @@ from match_db import save_to_db
 
 def get_round(year, round, to_json=False):
     """
-    Saves parsed match data as JSON files for all matches in the given round of the given year.
-    Matches are saved in the directory "/{year}/{round}/", relative to the current working directory.
-    The JSON files are named as "{year}_{round}_{match name}".
+    Saves parsed match data into PostgreSQL database or as JSON files for all matches in the given round of the given year.
+    - If output is chosen to be saved as JSON files, Matches are saved in the directory 
+        "/{year}/{round}/", relative to the current working directory.
+        The JSON files are named as "{year}_{round}_{match name}".
 
     Args:
         year (str): Year of matches
@@ -27,17 +28,14 @@ def get_round(year, round, to_json=False):
         KeyError: If there is a missing key in the match data parsing process. Saves the error causing input as error.json file.
     
     """
-
-    # Create directory to save json files
-    directory = f"matches/{year}/round {round}"
-    os.makedirs(directory, exist_ok=True)
+    if to_json:
+        # Create directory to save json files
+        directory = f"matches/{year}/round {round}"
+        os.makedirs(directory, exist_ok=True)
 
     url = f"https://www.nrl.com/draw/?competition=111&round={round}&season={year}"
 
     draws_json = scrape_url(url, 'draw')
-
-    with open("testround.json", "w") as f:
-        json.dump(draws_json['fixtures'], f, indent=4)
     
     for match in draws_json['fixtures']:
         match_url = "https://www.nrl.com" + match['matchCentreUrl']
@@ -48,7 +46,7 @@ def get_round(year, round, to_json=False):
             # Get match data JSON object and parse
             match_data_json = scrape_url(match_url, 'match')
 
-            # Save input to error file if key exception occurs for debugging
+            # Save input to error file if key exception occurs during parsing for debugging
             try:
                 match_data, metadata = parse_match_data(match_data_json['match'])
             except KeyError as e:
@@ -62,6 +60,7 @@ def get_round(year, round, to_json=False):
                 with open(file_path, 'w') as f:
                     json.dump(match_data, f, indent=4)
             
+            # Save to db
             save_to_db(match_data, metadata)
         
 if __name__ == "__main__":
