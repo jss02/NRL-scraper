@@ -53,4 +53,4 @@ DB_PORT={port}
 ```
 
 ## License 
-MIT Open Source [License](LICENSE)
+Creative Commons Attribution-NonCommercial 4.0 International License. View [License](https://creativecommons.org/licenses/by-nc/4.0/).
