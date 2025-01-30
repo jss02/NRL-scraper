@@ -6,10 +6,7 @@ DB_USER={username}
 DB_PASSWORD={password}
 DB_HOST={host}
 DB_PORT={port}
-
-
 """
-
 
 from dotenv import load_dotenv
 import os

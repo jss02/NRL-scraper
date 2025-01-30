@@ -1,5 +1,5 @@
 """
-
+Module providing the "get_year" function that scrapes all matches in the given year.
 """
 
 from round_scraper import get_round
@@ -7,6 +7,7 @@ from scraper import scrape_url
 import sys
 
 def get_year(year, to_json):
+    """Retrieves match data for all games in the given year"""
     url = f"https://www.nrl.com/draw/?competition=111&round=1&season={year}"
 
     q_data_json = scrape_url(url, 'draw')

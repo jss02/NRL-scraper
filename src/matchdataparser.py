@@ -1,9 +1,10 @@
 """
-Module providing 'parse_match_data' function for parsing useful match data and statistics.
+Module providing 'parse_match_data' function for parsing useful match data and
+statistics.
 
-The 'parse_match_data' function filters out unhelpful values such as images, team themes, metadata, and other irrelevant data in the JSON object obtained by scraping NRL.com matches. 
-
-Other functions are internal helpers and should not be used directly.
+The 'parse_match_data' function filters out unhelpful values such as images,
+team themes, metadata, and other irrelevant data in the JSON object obtained by
+scraping NRL.com matches. 
 """
 
 

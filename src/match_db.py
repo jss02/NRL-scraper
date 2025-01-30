@@ -1,10 +1,15 @@
+"""
+Module providing the "save_to_db" function for saving match data to PostgreSQL database.
+Must have PostgreSQL database configured beforehand.
+"""
+
 import psycopg2
-from psycopg2 import sql
 from psql_config import DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 from db_queries import *
 import json
 
 def db_conn():
+    """Connect to PostgreSQL database"""
     try:
         conn = psycopg2.connect(
             dbname=DB_NAME,
@@ -19,6 +24,7 @@ def db_conn():
         return None
 
 def create_tables(cursor):
+    """Create tables in the database"""
     try:
         cursor.execute(create_matches_table)
         cursor.execute(create_players_table)
@@ -29,6 +35,7 @@ def create_tables(cursor):
         cursor.connection.rollback()
 
 def get_match_tuple(match_data):
+    """Create tuple containing match data"""
     match_tuple = (
         int(match_data['matchId']),
         match_data['gameSeconds'],
@@ -52,18 +59,21 @@ def get_match_tuple(match_data):
     return match_tuple
 
 def insert_players(cursor, players_json):
+    """Insert player data into players table"""
     for key in players_json:
         for player in players_json[key]:
             cursor.execute(insert_player_query, (player['playerId'], player['firstName'], player['lastName']))
     cursor.connection.commit()
 
 def insert_player_stats_metadata(cursor, metadata):
+    """Insert player stats metadata into player_stats_metadata table"""
     for group in metadata:
         for stat in group['stats']:
             cursor.execute(insert_player_stats_metadata_query, (stat['name'], stat['type']))
     cursor.connection.commit()
 
 def save_to_db(match_data, player_stats_metadata, overwrite=False):
+    """Save match data into database"""
     connection = db_conn()
     if connection:
         cursor = connection.cursor()
@@ -77,10 +87,4 @@ def save_to_db(match_data, player_stats_metadata, overwrite=False):
             cursor.connection.rollback()
 
         insert_players(cursor, match_data['players'])
-
         insert_player_stats_metadata(cursor, player_stats_metadata)
-
-
-# Test db connection
-if __name__ == "__main__":
-    save_to_db(1,2)

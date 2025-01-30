@@ -11,10 +11,14 @@ from match_db import save_to_db
 
 def get_round(year, round, to_json=True):
     """
-    Saves parsed match data into PostgreSQL database or as JSON files for all matches in the given round of the given year.
-    - If output is chosen to be saved as JSON files, Matches are saved in the directory 
-        "/{year}/{round}/", relative to the current working directory.
-        The JSON files are named as "{year}_{round}_{match name}".
+    Saves parsed match data into PostgreSQL database or as JSON files for all
+    matches in the given round of the given year.
+    
+    If outputs are chosen to be saved as JSON files, Matches are saved in the
+    directory "/{year}/{round}/", relative to the current working directory.
+    The JSON files are named as "{year}_{round}_{match name}".
+
+    If outputs are saved to database, user must have PostgreSQL database configured beforehand.
 
     Args:
         year (str): Year of matches
@@ -25,8 +29,8 @@ def get_round(year, round, to_json=True):
         None
     
     Raises:
-        KeyError: If there is a missing key in the match data parsing process. Saves the error causing input as error.json file.
-    
+        KeyError: If there is a missing key in the match data parsing process.
+                  Saves the error causing input as error.json file.
     """
     if to_json:
         # Create directory to save json files
