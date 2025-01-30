@@ -9,7 +9,7 @@ from scraper import scrape_url
 from matchdataparser import parse_match_data
 from match_db import save_to_db
 
-def get_round(year, round, to_json=False):
+def get_round(year, round, to_json=True):
     """
     Saves parsed match data into PostgreSQL database or as JSON files for all matches in the given round of the given year.
     - If output is chosen to be saved as JSON files, Matches are saved in the directory 
@@ -59,13 +59,13 @@ def get_round(year, round, to_json=False):
                 file_path = os.path.join(directory, f'{year}_{round}_{match_name}.json')
                 with open(file_path, 'w') as f:
                     json.dump(match_data, f, indent=4)
-            
-            # Save to db
-            save_to_db(match_data, metadata)
+            else:
+                # Save to db
+                save_to_db(match_data, metadata)
         
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Error! Usage: python3 src/round_scraper.py [year] [round]")
+    if len(sys.argv) != 4:
+        print("Error! Usage: python3 src/round_scraper.py [year] [round] [save type]")
         sys.exit(1)
     
-    get_round(sys.argv[1], sys.argv[2])
+    get_round(sys.argv[1], sys.argv[2], sys.argv[3]=='json')
