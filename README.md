@@ -12,28 +12,40 @@ Web scraper for NRL.com matches written in Python.
 ## Installation
 1. Clone repository:
 
-    `git clone https://github.com/jss02/NRL-scraper.git`
+```
+git clone https://github.com/jss02/NRL-scraper.git
+```
 
 2. Navigate to project:
 
-    `cd NRL-scraper`
+```
+cd NRL-scraper
+```
 
 3. Install dependencies:
 
-    `pip install -r requirements.txt`
+```
+pip install -r requirements.txt
+```
 
 ## Usage:
 To get all matches from a round, run:
 
-`python3 src/round_scraper [year] [round] json`
+```
+python3 src/round_scraper [year] [round] json
+```
 
 To get all matches from a year, run:
 
-`python3 src/year_scraper [year] json`
+```
+python3 src/year_scraper [year] json
+```
 
 To get all matches from a range of years, run:
 
-`python3 src/year_scraper [start year] [end year] json`
+```
+python3 src/year_scraper [start year] [end year] json
+```
 
 To save results to a PostgreSQL database, use the above commands with
 "json" replaced with 'psql'

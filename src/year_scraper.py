@@ -18,7 +18,7 @@ def get_year(year, to_json):
        get_round(year, round['value'], to_json)
 
 if __name__ == '__main__':
-    if len(sys.argv) == 3:
+    if len(sys.argv) == 3 and not sys.argv[2].isdigit() :
         get_year(sys.argv[1], sys.argv[2]=='json')
     elif len(sys.argv) == 4:
         for year in range(int(sys.argv[1]), int(sys.argv[2]) + 1):
