@@ -1,5 +1,5 @@
 """
-Module containing the database schemas as strings.
+Module containing the database queries as strings.
 """
 
 create_matches_table = """
